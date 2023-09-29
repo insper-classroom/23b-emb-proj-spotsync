@@ -51,6 +51,7 @@ Entrada
 - Ir para a música anterior: push botão vermelho
 - Pausar ou voltar a música: push botão amarelo
 - Aleatoriedade ou não da fila de músicas: push botão azul
+
 Saída
 - Buzzer: qualquer saída sonora de música
 - Led amarelo: quando botão amarelo for pressionado para um evento (o led liga e desliga a cada pressionada)

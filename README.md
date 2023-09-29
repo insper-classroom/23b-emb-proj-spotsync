@@ -6,45 +6,50 @@ Desenvolvendo um controle remoto.
 
 ### Integrantes
 
-- Nome1
-- Nome2
+- Giovana Cassoni Andrade
+- Guilherme Caproni de Faria
 
 ### Ideia
 
-<!--  Descreva aqui em poucas palavras qual a ideia do seu controle. Se ele vai ser de jogo ou de aplicação -->
+A ideia é de um controle para as principais funcionalidades do aplicativo Spotify, como o volume, pause, play, entre outras.
 
 ### Nome
 
-<!-- De um nome ao seu controle! -->
+SpotSync
 
 ### Usuários 
 
-<!-- Descreva aqui quem seriam os possíveis usuários deste controle. -->
+Os possíveis usuários são pessoas que fazem uso diário do Spotify, com o desejo de uma solução centralizada e que apreciam a conforto ou praticidade de possuir um controle manual.
 
 ### Software/Jogo 
 
-<!-- Qual software que seu controle vai controlar? -->
+O Software é o Spotify.
 
 ### Jornada do usuários (3 pts)
 
-<!-- Descreva ao menos duas jornadas de usuários distintos, é para caprichar! -->
+Jornada 1
+
+- Isabela é uma instrutora de fitness que ministra aulas de Zumba em um estúdio local. Durante as aulas, Isabela usa o controle físico do Spotify para pausar, pular faixas e ajustar o volume da música rapidamente sem precisar tocar em um dispositivo eletrônico e pausar sua aula.
+
+Jornada 2
+
+- Miguel é um chef de cozinha que utiliza o Spotify para reproduzir músicas enquanto cozinha, mas não quer tocar em seu smartphone com as mãos sujas. O controle físico do Spotify é a solução perfeita para Miguel, permitindo que ele utilize as funções básicas do Spotify sem deixar de preparar suas refeições com as mãos livres.
 
 ### Comandos/ Feedbacks (2 pts)
 
-<!-- 
-Quais são os comandos/ operacões possíveis do seu controle?
-
-Quais os feedbacks que seu controle vai fornecer ao usuário?
--->
+- Controlar o volume: feedback visual do slider
+- Pular música para a próxima na fila: feedback sonoro
+- Voltar música para a anterior da fila: feedback sonoro
+- Pause/Play música: feedback visual, um led aceso ou apagado dependendo do evento
+- Fila no aleatório ou não: feedback visual, led aceso se a fila for aleatória e apagado se a fila segue ordem normal
 
 ## In/OUT (3 pts)
 
-<!--
-Para cada Comando/ Feedback do seu controle, associe qual sensores/ atuadores pretende utilizar? Faca em formato de lista, exemplo:
-
-- Avanca música: Push button amarelo
-- Volume da música: Fita de LED indicando potência do som
--->
+- Controla o volume da música: slider no computador
+- Pular a música para a próxima na fila: push botão verde
+- Ir para a música anterior: push botão vermelho
+- Pausar ou voltar a música: push botão amarelo
+- Aleatoriedade ou não da fila de músicas: push botão azul
 
 ### Design (2 pts)
 

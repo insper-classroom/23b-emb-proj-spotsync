@@ -45,11 +45,16 @@ Jornada 2
 
 ## In/OUT (3 pts)
 
-- Controla o volume da música: slider no computador
+Entrada
+- Controla o volume da música: slider
 - Pular a música para a próxima na fila: push botão verde
 - Ir para a música anterior: push botão vermelho
 - Pausar ou voltar a música: push botão amarelo
 - Aleatoriedade ou não da fila de músicas: push botão azul
+Saída
+- Buzzer: qualquer saída sonora de música
+- Led amarelo: quando botão amarelo for pressionado para um evento (o led liga e desliga a cada pressionada)
+- Led azul: quando botão azul for pressionado para um evento (o led liga e desliga a cada pressionada)
 
 ### Design (2 pts)
 

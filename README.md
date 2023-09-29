@@ -53,8 +53,10 @@ Entrada
 - Aleatoriedade ou não da fila de músicas: push botão azul
 
 Saída
-- Led amarelo: quando botão amarelo for pressionado para um evento (o led liga e desliga a cada pressionada)
-- Led azul: quando botão azul for pressionado para um evento (o led liga e desliga a cada pressionada)
+- Led branco: quando o botão verde é pressionado
+- Led vermelho: quando o botão vermelho é pressionado
+- Led amarelo: quando botão amarelo for pressionado para um evento (o led liga ou desliga a cada pressionada)
+- Led azul: quando botão azul for pressionado para um evento (o led liga ou desliga a cada pressionada)
 
 ### Design (2 pts)
 

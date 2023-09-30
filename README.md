@@ -13,9 +13,6 @@ Desenvolvendo um controle remoto.
 
 A ideia é de um controle para as principais funcionalidades do aplicativo Spotify, como o volume, pause, play, entre outras.
 
-![image](https://github.com/insper-classroom/23b-emb-proj-spotsync/assets/60935725/c8e5bb00-7c78-41e1-a3c5-e0b2c02257c5)
-
-
 ### Nome
 
 SpotSync
@@ -63,6 +60,5 @@ Saída
 
 ### Design (2 pts)
 
-<!--
-Faca um esboco de como seria esse controle (vai ter uma etapa que terão que detalhar melhor isso).
--->
+![image](https://github.com/insper-classroom/23b-emb-proj-spotsync/assets/60935725/c8e5bb00-7c78-41e1-a3c5-e0b2c02257c5)
+

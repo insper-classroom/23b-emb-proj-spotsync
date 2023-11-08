@@ -104,7 +104,6 @@ typedef struct {
 	int value;
 } pack;
 
-volatile int liga = 0;
 
 /************************************************************************/
 /* RTOS application HOOK                                                */
@@ -367,8 +366,14 @@ static void task_proc(void *pvParameters){
   // variável para recever dados da fila
   adcData adc;
   pack tip;
+  int liga = 0;
   int v[2] = {};
   while (1) {
+	if (xQueueReceive(xQueueLiga, &tip, 0)) {
+		if (tip.value == 7){
+			liga = 1;
+		}
+	}
     if(xQueueReceive(xQueuePot, &adc, portMAX_DELAY)) {
 	  v[0] = v[1];
 	  v[1] = adc.value;
@@ -402,7 +407,7 @@ void task_bluetooth(void) {
 
 	char button1;
 	char eof = 'X';
-
+	int liga = 0;
 	pack tip;
 
 	// Task não deve retornar.

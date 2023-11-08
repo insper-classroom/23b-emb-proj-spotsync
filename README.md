@@ -2,6 +2,8 @@
 
 Desenvolvendo um controle remoto.
 
+Link do vídeo: https://youtu.be/fIEIKD7_Seo
+
 ## Entrega 1
 
 ### Integrantes

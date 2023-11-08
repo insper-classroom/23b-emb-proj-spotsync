@@ -70,7 +70,8 @@
 #define TASK_BLUETOOTH_STACK_PRIORITY        (tskIDLE_PRIORITY)
 
 QueueHandle_t xQueuePot;
-QueueHandle_t xQueueValue;
+QueueHandle_t xQueueButton;
+QueueHandle_t xQueueLiga;
 
 TimerHandle_t xTimer;
 
@@ -98,11 +99,13 @@ typedef struct {
   uint value;
 } adcData;
 
-volatile int flag1 = 0;
-volatile int flag2 = 0;
-volatile int flag3 = 0;
-volatile int flag4 = 0;
-volatile int flag5 = 1;
+typedef struct {
+	char tipo;
+	int value;
+} pack;
+
+volatile int liga = 0;
+
 /************************************************************************/
 /* RTOS application HOOK                                                */
 /************************************************************************/
@@ -140,11 +143,41 @@ void vTimerCallback(TimerHandle_t xTimer) {
   afec_start_software_conversion(AFEC_POT);
 }
 
-void but1_callback(void) { flag1= 1; }
-void but2_callback(void) { flag2= 1; }
-void but3_callback(void) { flag3= 1; }
-void but4_callback(void) { flag4= 1; }
-void but5_callback(void) { flag5 = !flag5; }
+void but1_callback(void) {
+	pack p;
+	p.tipo = 'b';
+	p.value = 1;
+	BaseType_t xHigherPriorityTaskWoken = pdTRUE;
+	xQueueSendFromISR(xQueueButton, &p, &xHigherPriorityTaskWoken);
+}
+void but2_callback(void) { 
+	pack p;
+	p.tipo = 'b';
+	p.value = 2;
+	BaseType_t xHigherPriorityTaskWoken = pdTRUE;
+	xQueueSendFromISR(xQueueButton, &p, &xHigherPriorityTaskWoken);
+}
+void but3_callback(void) { 
+	pack p;
+	p.tipo = 'b';
+	p.value = 3;
+	BaseType_t xHigherPriorityTaskWoken = pdTRUE;
+	xQueueSendFromISR(xQueueButton, &p, &xHigherPriorityTaskWoken);
+}
+void but4_callback(void) {
+	pack p;
+	p.tipo = 'b';
+	p.value = 4;
+	BaseType_t xHigherPriorityTaskWoken = pdTRUE;
+	xQueueSendFromISR(xQueueButton, &p, &xHigherPriorityTaskWoken);
+}
+void but5_callback(void) { 
+	pack p;
+	p.tipo = 'b';
+	p.value = 7;
+	BaseType_t xHigherPriorityTaskWoken = pdTRUE;
+	xQueueSendFromISR(xQueueLiga, &p, &xHigherPriorityTaskWoken);
+}
 
 /************************************************************************/
 /* funcoes                                                              */
@@ -333,25 +366,25 @@ static void task_proc(void *pvParameters){
 
   // variável para recever dados da fila
   adcData adc;
-  int valor;
+  pack tip;
   int v[2] = {};
   while (1) {
     if(xQueueReceive(xQueuePot, &adc, portMAX_DELAY)) {
 	  v[0] = v[1];
 	  v[1] = adc.value;
 	  if(v[1] > (v[0]+100)){
-		valor = 1;
-		if(flag5){
-			BaseType_t xHigherPriorityTaskWoken = pdTRUE;
-			xQueueSendFromISR(xQueueValue, &valor, &xHigherPriorityTaskWoken);
+		if(liga == 1){
+			tip.tipo = 'a';
+			tip.value = 1;
+			xQueueSend(xQueueButton, &tip, 0);
 		}
 		
 	  }
 	  else if(v[1] < (v[0]-100)){
-		valor = 0;
-		if(flag5){
-			BaseType_t xHigherPriorityTaskWoken = pdTRUE;
-			xQueueSendFromISR(xQueueValue, &valor, &xHigherPriorityTaskWoken);
+		if(liga == 1){
+			tip.tipo = 'a';
+			tip.value = 0;
+			xQueueSend(xQueueButton, &tip, 0);
 		}
 	  }
 	}
@@ -360,7 +393,6 @@ static void task_proc(void *pvParameters){
 
 void task_bluetooth(void) {
 	printf("Task Bluetooth started \n");
-	
 	printf("Inicializando HC05 \n");
 	config_usart0();
 	hc05_init();
@@ -371,36 +403,37 @@ void task_bluetooth(void) {
 	char button1;
 	char eof = 'X';
 
-	int valor;
+	pack tip;
 
 	// Task não deve retornar.
 	while(1) {
-		// atualiza valor do botão
-		if(flag5){
-			if(flag1 == 1) {
-				button1 = '1';
-				flag1=0;
-			} 
-			else if (flag2 == 1) {
-				button1 = '2';
-				flag2=0;
-			} 
-			else if (flag3 == 1) {
-				button1 = '3';
-				flag3=0;
+		if (liga == 0){
+			if (xQueueReceive(xQueueLiga, &tip, 0)) {
+				if (tip.value == 7){
+					liga = 1;
+				}
+				button1 = '0';
 			}
-			else if (flag4 == 1) {
-				button1 = '4';
-				flag4=0;
-			}
-			else if (xQueueReceive(xQueueValue, &valor, 0) == pdTRUE) {
-				if (valor == 1) { button1 = '5'; }
-				else { button1 = '6'; }
+		}
+		else {
+			// atualiza valor do botão
+			if (xQueueReceive(xQueueButton, &tip, 0)) {
+				if (tip.tipo == 'b'){
+					if (tip.value == 1){button1 = '1';}
+					else if (tip.value == 2){button1 = '2';}
+					else if (tip.value == 3){button1 = '3';}
+					else if (tip.value == 4){button1 = '4';}
+				}
+				else if (tip.tipo == 'a'){
+					if (tip.value == 1){button1 = '5';}
+					else {button1 = '6';}
+				}
+				else { button1 = '0'; }
 			}
 			else { button1 = '0'; }
 		}
-		else { button1 = '0'; }   
-
+		
+		
 		// envia status botão
 		while(!usart_is_tx_ready(USART_COM)) {
 			vTaskDelay(10 / portTICK_PERIOD_MS);
@@ -423,13 +456,6 @@ void task_bluetooth(void) {
 /************************************************************************/
 
 int main(void) {
-	/* Initialize the SAM system */
-	sysclk_init();
-	board_init();
-	io_init();
-	delay_init();
-	configure_console();
-
 	/* Create tasks */
 	xTaskCreate(task_bluetooth, "BLT", TASK_BLUETOOTH_STACK_SIZE, NULL,	TASK_BLUETOOTH_STACK_PRIORITY, NULL);
 	xTaskCreate(task_proc, "PROC", TASK_BLUETOOTH_STACK_SIZE, NULL,	TASK_BLUETOOTH_STACK_PRIORITY, NULL);
@@ -439,10 +465,20 @@ int main(void) {
   	if (xQueuePot == NULL)
 		printf("falha em criar a queue xQueueADC \n");
 
-	xQueueValue = xQueueCreate(100, sizeof(int));
-	if (xQueueValue == NULL)
-		printf("falha em criar a queue xQueueValue \n");
-
+	xQueueButton = xQueueCreate(100, sizeof(pack));
+	if (xQueueButton == NULL)
+	printf("falha em criar a queue xQueueButton \n");
+	
+	xQueueLiga = xQueueCreate(100, sizeof(pack));
+	if (xQueueLiga == NULL)
+	printf("falha em criar a queue xQueueLiga \n");
+	
+	/* Initialize the SAM system */
+	sysclk_init();
+	board_init();
+	io_init();
+	delay_init();
+	configure_console();
 
 	/* Start the scheduler. */
 	vTaskStartScheduler();

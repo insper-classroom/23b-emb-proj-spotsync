@@ -230,13 +230,9 @@ void io_init(void) {
 static void configure_console(void) {
 	const usart_serial_options_t uart_serial_options = {
 		.baudrate = CONF_UART_BAUDRATE,
-		#if (defined CONF_UART_CHAR_LENGTH)
-		.charlength = CONF_UART_CHAR_LENGTH,
-		#endif
+	
 		.paritytype = CONF_UART_PARITY,
-		#if (defined CONF_UART_STOP_BITS)
-		.stopbits = CONF_UART_STOP_BITS,
-		#endif
+	
 	};
 
 	stdio_serial_init(CONF_UART, &uart_serial_options);
@@ -289,7 +285,7 @@ static void config_AFEC_pot(Afec *afec, uint32_t afec_id, uint32_t afec_channel,
 }
 
 uint32_t usart_puts(uint8_t *pstring) {
-	uint32_t i ;
+	uint32_t i = 0;
 	while(*(pstring + i))
 	if(uart_is_tx_empty(USART_COM))
 	usart_serial_putchar(USART_COM, *(pstring+i++));
